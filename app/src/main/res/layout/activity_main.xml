@@ -14,6 +14,6 @@
         app:navermap_latitude="35.945282"
         app:navermap_longitude="126.68215299999997"
         app:navermap_zoom="15"
-        app:navermap_mapType="Basic" />
+        app:navermap_mapType="Hybrid" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
