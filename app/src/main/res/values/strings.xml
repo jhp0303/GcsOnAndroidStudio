@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GcsOnAndroidStudio</string>
+    <string name="CurrentLocation">위치변경</string>
 </resources>
