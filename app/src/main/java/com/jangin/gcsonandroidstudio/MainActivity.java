@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.CameraUpdate;
@@ -58,14 +60,20 @@ public class MainActivity extends FragmentActivity
     public void onMapReady(@NonNull NaverMap naverMap) {
         naverMap.setMapType(NaverMap.MapType.Terrain);
 
-        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(35.945282, 126.68215299999997))
+        CameraUpdate cameraUpdate = CameraUpdate.scrollAndZoomTo(new LatLng(35.945282, 126.68215299999997), 15)
                 .animate(CameraAnimation.Fly,5000);
-        CameraUpdate camerazoom = CameraUpdate.zoomTo(15);
-        naverMap.moveCamera(camerazoom);
         naverMap.moveCamera(cameraUpdate);
 
         UiSettings uiSettings = naverMap.getUiSettings();
         uiSettings.setLocationButtonEnabled(true);
+        LatLngBounds bounds = new LatLngBounds.Builder()
+                .include(new LatLng(35.945282, 126.68215299999997))
+                .include(new LatLng(35.9675829, 126.7368305))
+                .include(new LatLng(35.9703446,126.95475629999999))
+                .include(new LatLng(35.8441821,127.12927769999999))
+                .build();
+        CameraUpdate cameraCenter = CameraUpdate.fitBounds(bounds, 100);
+        naverMap.moveCamera(cameraCenter);
 
         Marker KSUmarker = new Marker();
         KSUmarker.setPosition(new LatLng(35.945282, 126.68215299999997));
@@ -127,7 +135,6 @@ public class MainActivity extends FragmentActivity
         });
         JBNUinfoWindow.open(JBNUmarker);
 
-
         PolylineOverlay polyline = new PolylineOverlay();
         polyline.setCoords(Arrays.asList(
                 new LatLng(35.945282, 126.68215299999997),
@@ -137,5 +144,7 @@ public class MainActivity extends FragmentActivity
         ));
         polyline.setMap(naverMap);
         polyline.setColor(Color.CYAN);
+
+        
     }
 }
