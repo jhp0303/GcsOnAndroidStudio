@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import android.graphics.Camera;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.naver.maps.geometry.LatLng;
@@ -26,7 +28,9 @@ import com.naver.maps.map.overlay.LocationOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.PolylineOverlay;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends FragmentActivity
         implements OnMapReadyCallback {
@@ -57,7 +61,7 @@ public class MainActivity extends FragmentActivity
 
     @UiThread
     @Override
-    public void onMapReady(@NonNull NaverMap naverMap) {
+    public void onMapReady(@NonNull final NaverMap naverMap) {
         naverMap.setMapType(NaverMap.MapType.Terrain);
 
         CameraUpdate cameraUpdate = CameraUpdate.scrollAndZoomTo(new LatLng(35.945282, 126.68215299999997), 15)
@@ -66,7 +70,7 @@ public class MainActivity extends FragmentActivity
 
         UiSettings uiSettings = naverMap.getUiSettings();
         uiSettings.setLocationButtonEnabled(true);
-        LatLngBounds bounds = new LatLngBounds.Builder()
+        final LatLngBounds bounds = new LatLngBounds.Builder()
                 .include(new LatLng(35.945282, 126.68215299999997))
                 .include(new LatLng(35.9675829, 126.7368305))
                 .include(new LatLng(35.9703446,126.95475629999999))
@@ -75,12 +79,12 @@ public class MainActivity extends FragmentActivity
         CameraUpdate cameraCenter = CameraUpdate.fitBounds(bounds, 100);
         naverMap.moveCamera(cameraCenter);
 
-        Marker KSUmarker = new Marker();
+        final Marker KSUmarker = new Marker();
         KSUmarker.setPosition(new LatLng(35.945282, 126.68215299999997));
         KSUmarker.setMap(naverMap);
         KSUmarker.setWidth(Marker.SIZE_AUTO);
         KSUmarker.setHeight(Marker.SIZE_AUTO);
-        InfoWindow KSUinfoWindow = new InfoWindow();
+        final InfoWindow KSUinfoWindow = new InfoWindow();
         KSUinfoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
             @NonNull
             @Override
@@ -90,12 +94,12 @@ public class MainActivity extends FragmentActivity
         });
         KSUinfoWindow.open(KSUmarker);
 
-        Marker KSCHmarker = new Marker();
+        final Marker KSCHmarker = new Marker();
         KSCHmarker.setPosition(new LatLng(35.9675829, 126.7368305));
         KSCHmarker.setMap(naverMap);
         KSCHmarker.setWidth(Marker.SIZE_AUTO);
         KSCHmarker.setHeight(Marker.SIZE_AUTO);
-        InfoWindow KSCHinfoWindow = new InfoWindow();
+        final InfoWindow KSCHinfoWindow = new InfoWindow();
         KSCHinfoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
             @NonNull
             @Override
@@ -105,12 +109,12 @@ public class MainActivity extends FragmentActivity
         });
         KSCHinfoWindow.open(KSCHmarker);
 
-        Marker WKUmarker = new Marker();
+        final Marker WKUmarker = new Marker();
         WKUmarker.setPosition(new LatLng(35.9703446,126.95475629999999));
         WKUmarker.setMap(naverMap);
         WKUmarker.setWidth(Marker.SIZE_AUTO);
         WKUmarker.setHeight(Marker.SIZE_AUTO);
-        InfoWindow WKUinfoWindow = new InfoWindow();
+        final InfoWindow WKUinfoWindow = new InfoWindow();
         WKUinfoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
             @NonNull
             @Override
@@ -120,12 +124,12 @@ public class MainActivity extends FragmentActivity
         });
         WKUinfoWindow.open(WKUmarker);
 
-        Marker JBNUmarker = new Marker();
+        final Marker JBNUmarker = new Marker();
         JBNUmarker.setPosition(new LatLng(35.8441821,127.12927769999999));
         JBNUmarker.setMap(naverMap);
         JBNUmarker.setWidth(Marker.SIZE_AUTO);
         JBNUmarker.setHeight(Marker.SIZE_AUTO);
-        InfoWindow JBNUinfoWindow = new InfoWindow();
+        final InfoWindow JBNUinfoWindow = new InfoWindow();
         JBNUinfoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
             @NonNull
             @Override
@@ -135,7 +139,7 @@ public class MainActivity extends FragmentActivity
         });
         JBNUinfoWindow.open(JBNUmarker);
 
-        PolylineOverlay polyline = new PolylineOverlay();
+        final PolylineOverlay polyline = new PolylineOverlay();
         polyline.setCoords(Arrays.asList(
                 new LatLng(35.945282, 126.68215299999997),
                 new LatLng(35.9675829, 126.7368305),
@@ -145,6 +149,47 @@ public class MainActivity extends FragmentActivity
         polyline.setMap(naverMap);
         polyline.setColor(Color.CYAN);
 
-        
+        LatLng marker1 = new LatLng(35.945282, 126.68215299999997);
+        LatLng marker2 = new LatLng(35.9675829, 126.7368305);
+        LatLng marker3 = new LatLng(35.9703446, 126.95475629999999);
+        LatLng marker4 = new LatLng(35.8441821,127.12927769999999);
+        final List markers = new ArrayList();
+        markers.add(marker1);
+        markers.add(marker2);
+        markers.add(marker3);
+        markers.add(marker4);
+
+        final View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (KSUmarker.getMap() == null) {
+                    // 현재 마커가 지도에 없을 경우 마커를 찍음
+                    KSUmarker.setMap(naverMap);
+                    KSUinfoWindow.open(KSUmarker);
+                    KSCHmarker.setMap(naverMap);
+                    KSCHinfoWindow.open(KSCHmarker);
+                    WKUmarker.setMap(naverMap);
+                    WKUinfoWindow.open(WKUmarker);
+                    JBNUmarker.setMap(naverMap);
+                    JBNUinfoWindow.open(JBNUmarker);
+                    polyline.setMap(naverMap);
+                } else {
+                    // 이미 마커가 지도에 있을 경우 닫음
+                    KSUmarker.setMap(null);
+                    KSCHmarker.setMap(null);
+                    WKUmarker.setMap(null);
+                    JBNUmarker.setMap(null);
+                    polyline.setMap(null);
+
+                }
+            }
+        };
+
+        Button markerBtn = (Button) findViewById(R.id.button);
+        markerBtn.setOnClickListener(listener);
+
+        naverMap.setOnMapLongClickListener((point, coord) ->
+                Toast.makeText(this, coord.latitude + ", " + coord.longitude,
+                        Toast.LENGTH_SHORT).show());
     }
 }
