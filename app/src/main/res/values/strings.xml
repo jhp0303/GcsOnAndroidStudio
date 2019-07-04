@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">GcsOnAndroidStudio</string>
     <string name="CurrentLocation">위치변경</string>
-    <string name="Marker_Button">Marker Off</string>
+    <string name="Marker_Button">Marker On</string>
 </resources>
