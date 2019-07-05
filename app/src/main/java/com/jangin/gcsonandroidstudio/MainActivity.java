@@ -8,7 +8,10 @@ import androidx.fragment.app.FragmentManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.naver.maps.geometry.LatLng;
@@ -50,13 +53,48 @@ public class MainActivity extends FragmentActivity
                 "위도: " + coord.latitude + ", 경도: " + coord.longitude,
                 Toast.LENGTH_SHORT).show();
 
+        //MapType Spinner (same android:entries="@array/SelectMapType" in activity_main.xml)
+        //Spinner SelectMapType = (Spinner)findViewById(R.id.selectMapType);
+        //ArrayAdapter TypeAdapter = ArrayAdapter.createFromResource(this, R.array.SelectMapType, android.R.layout.simple_spinner_item);
+        //TypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //SelectMapType.setAdapter(TypeAdapter);
+
+
+
+
 
     }
+
+
 
     @UiThread
     @Override
     public void onMapReady(@NonNull final NaverMap naverMap) {
-        naverMap.setMapType(NaverMap.MapType.Terrain);
+
+        Spinner selectMapType = (Spinner)findViewById(R.id.selectMapType);
+
+        selectMapType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i == 0){
+                    naverMap.setMapType(NaverMap.MapType.Basic);
+                }
+                else if(i == 1){
+                    naverMap.setMapType(NaverMap.MapType.Satellite);
+                }
+                else if(i == 2){
+                    naverMap.setMapType(NaverMap.MapType.Hybrid);
+                }
+                else{
+                    naverMap.setMapType(NaverMap.MapType.Terrain);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         ArrayList<LatLng> markersLatLng = new ArrayList<>();
         ArrayList<Marker> markersArray = new ArrayList<>();
